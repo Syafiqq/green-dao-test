@@ -5,6 +5,7 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
 
 import lombok.Data;
+import org.greenrobot.greendao.annotation.Generated;
 
 @Entity(
         generateConstructors = false,

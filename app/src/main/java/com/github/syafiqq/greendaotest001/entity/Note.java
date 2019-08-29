@@ -8,6 +8,7 @@ import org.greenrobot.greendao.annotation.NotNull;
 import java.util.Date;
 
 import lombok.Data;
+import org.greenrobot.greendao.annotation.Generated;
 
 @Entity(
         indexes = {

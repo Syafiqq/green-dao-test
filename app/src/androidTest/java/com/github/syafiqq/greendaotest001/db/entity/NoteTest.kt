@@ -27,7 +27,7 @@ class NoteTest {
     private var helper: DaoMaster.DevOpenHelper? = null
     private var context: Context? = null
     private var dao: NoteDao? = null
-    private var note : Note? = null
+    private var entity : Note? = null
 
     @Before
     fun setUp() {
@@ -36,12 +36,12 @@ class NoteTest {
         db = helper?.writableDb
         session = DaoMaster(db).newSession(IdentityScopeType.Session)
         dao = session?.noteDao
-        note = Note().apply {
+        entity = Note().apply {
             this.text = "This is text"
             this.date = Date()
         }
 
-        assertThat(note, IsNot(IsNull()))
+        assertThat(entity, IsNot(IsNull()))
         assertThat(context, IsNot(IsNull()))
         assertThat(helper, IsNot(IsNull()))
         assertThat(db, IsNot(IsNull()))
@@ -58,64 +58,65 @@ class NoteTest {
     }
 
     @Test
-    fun it_should_select_all_notes() {
-        val notes = dao?.loadAll()
+    fun it_should_select_all_entities() {
+        val entities = dao?.loadAll()
 
-        assertThat(notes, IsInstanceOf(MutableList::class.java))
+        assertThat(entities, IsInstanceOf(MutableList::class.java))
+        assertThat(entities?.size, IsEqual(0))
     }
 
     @Test
     fun it_should_insert_note() {
-        note?.let { dao?.insert(it) }
+        entity?.let { dao?.insert(it) }
 
-        val notes = dao?.loadAll()
+        val entities = dao?.loadAll()
 
-        assertThat(notes, IsInstanceOf(MutableList::class.java))
-        assertThat(notes?.size, IsEqual(1))
-        val actualNote = notes?.first()
-        assertThat(actualNote?.id, IsEqual(note?.id))
-        assertThat(actualNote?.id, IsEqual(1L))
-        assertThat(actualNote?.text, IsEqual(note?.text))
-        assertThat(actualNote?.date, IsEqual(note?.date))
+        assertThat(entities, IsInstanceOf(MutableList::class.java))
+        assertThat(entities?.size, IsEqual(1))
+        val actualEntity = entities?.first()
+        assertThat(actualEntity?.id, IsEqual(entity?.id))
+        assertThat(actualEntity?.id, IsEqual(1L))
+        assertThat(actualEntity?.text, IsEqual(entity?.text))
+        assertThat(actualEntity?.date, IsEqual(entity?.date))
     }
 
     @Test
     fun it_should_delete_note() {
-        note?.let { dao?.insert(it) }
+        entity?.let { dao?.insert(it) }
 
-        var notes = dao?.loadAll()
+        var entities = dao?.loadAll()
 
-        assertThat(notes, IsInstanceOf(MutableList::class.java))
-        assertThat(notes?.size, IsEqual(1))
+        assertThat(entities, IsInstanceOf(MutableList::class.java))
+        assertThat(entities?.size, IsEqual(1))
 
-        dao?.deleteByKey(note?.id)
+        dao?.deleteByKey(entity?.id)
 
-        notes = dao?.loadAll()
+        entities = dao?.loadAll()
 
-        assertThat(notes, IsInstanceOf(MutableList::class.java))
-        assertThat(notes?.size, IsEqual(0))
+        assertThat(entities, IsInstanceOf(MutableList::class.java))
+        assertThat(entities?.size, IsEqual(0))
     }
 
     @Test
     fun it_should_update_name() {
         val newText = "New Text"
-        assertThat(newText, IsNot(IsEqual(note?.text)))
+        assertThat(newText, IsNot(IsEqual(entity?.text)))
 
-        note?.let { dao?.insert(it) }
+        entity?.let { dao?.insert(it) }
 
-        var notes = dao?.loadAll()
+        var entities = dao?.loadAll()
 
-        assertThat(notes, IsInstanceOf(MutableList::class.java))
-        assertThat(notes?.size, IsEqual(1))
-        assertThat(notes?.first()?.text, IsEqual(note?.text))
+        assertThat(entities, IsInstanceOf(MutableList::class.java))
+        assertThat(entities?.size, IsEqual(1))
+        assertThat(entities?.first()?.text, IsEqual(entity?.text))
 
-        note?.text = newText
-        dao?.update(note)
+        entity?.text = newText
+        dao?.update(entity)
 
-        notes = dao?.loadAll()
+        entities = dao?.loadAll()
 
-        assertThat(notes, IsInstanceOf(MutableList::class.java))
-        assertThat(notes?.size, IsEqual(1))
-        assertThat(notes?.first()?.text, IsEqual(newText))
+        assertThat(entities, IsInstanceOf(MutableList::class.java))
+        assertThat(entities?.size, IsEqual(1))
+        assertThat(entities?.first()?.text, IsEqual(newText))
     }
 }

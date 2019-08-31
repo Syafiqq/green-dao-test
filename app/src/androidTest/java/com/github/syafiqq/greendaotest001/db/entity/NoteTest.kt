@@ -95,4 +95,27 @@ class NoteTest {
         assertThat(notes, IsInstanceOf(MutableList::class.java))
         assertThat(notes?.size, IsEqual(0))
     }
+
+    @Test
+    fun it_should_update_name() {
+        val newText = "New Text"
+        assertThat(newText, IsNot(IsEqual(note?.text)))
+
+        note?.let { dao?.insert(it) }
+
+        var notes = dao?.loadAll()
+
+        assertThat(notes, IsInstanceOf(MutableList::class.java))
+        assertThat(notes?.size, IsEqual(1))
+        assertThat(notes?.first()?.text, IsEqual(note?.text))
+
+        note?.text = newText
+        dao?.update(note)
+
+        notes = dao?.loadAll()
+
+        assertThat(notes, IsInstanceOf(MutableList::class.java))
+        assertThat(notes?.size, IsEqual(1))
+        assertThat(notes?.first()?.text, IsEqual(newText))
+    }
 }

@@ -9,3 +9,6 @@
 /.idea
 /gradle
 /gradlew*
+/db*
+/cmds/*
+!/cmds/*.example.sh

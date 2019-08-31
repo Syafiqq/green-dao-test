@@ -165,4 +165,40 @@ class SessionTest {
         byId1?.text = "New Text"
         assertThat(byId1?.text, IsNot(IsEqual(byId2?.text)))
     }
+
+    @Test
+    fun it_should_return_same_location_against_lazy_list() {
+        session = DaoMaster(db).newSession(IdentityScopeType.Session)
+        dao = session?.noteDao
+
+        entity?.let { dao?.insert(it) }
+
+        var lazy = dao?.queryBuilder()
+            ?.where(NoteDao.Properties.Id.eq(entity?.id))
+            ?.listLazy()
+        val byId1 = lazy?.first()
+        lazy?.close()
+        val locId1 = System.identityHashCode(byId1)
+
+        val byId2 = dao?.queryBuilder()
+            ?.where(NoteDao.Properties.Id.eq(entity?.id))
+            ?.list()?.first()
+        val locId2 = System.identityHashCode(byId2)
+
+        lazy = dao?.queryBuilder()
+            ?.where(NoteDao.Properties.Id.eq(entity?.id))
+            ?.listLazy()
+        val byId3 = lazy?.first()
+        lazy?.close()
+        val locId3 = System.identityHashCode(byId3)
+
+        assertThat(byId1, IsEqual(byId2))
+        assertThat(locId1, IsEqual(locId2))
+        assertThat(byId2, IsEqual(byId3))
+        assertThat(locId2, IsEqual(locId3))
+        assertThat(byId3, IsEqual(byId1))
+        assertThat(locId3, IsEqual(locId1))
+        byId1?.text = "New Text"
+        assertThat(byId1?.text, IsEqual(byId2?.text))
+    }
 }

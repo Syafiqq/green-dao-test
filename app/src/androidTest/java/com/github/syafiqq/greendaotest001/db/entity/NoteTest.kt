@@ -37,7 +37,6 @@ class NoteTest {
         session = DaoMaster(db).newSession(IdentityScopeType.Session)
         dao = session?.noteDao
         note = Note().apply {
-            this.id = 1L
             this.text = "This is text"
             this.date = Date()
         }
@@ -75,6 +74,7 @@ class NoteTest {
         assertThat(notes?.size, IsEqual(1))
         val actualNote = notes?.first()
         assertThat(actualNote?.id, IsEqual(note?.id))
+        assertThat(actualNote?.id, IsEqual(1L))
         assertThat(actualNote?.text, IsEqual(note?.text))
         assertThat(actualNote?.date, IsEqual(note?.date))
     }

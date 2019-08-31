@@ -33,8 +33,6 @@ class SessionTest {
         context = InstrumentationRegistry.getInstrumentation().targetContext
         helper = DaoMaster.DevOpenHelper(context, "db-test")
         db = helper?.writableDb
-        session = DaoMaster(db).newSession(IdentityScopeType.Session)
-        dao = session?.noteDao
         entity = Note().apply {
             this.text = "This is text"
             this.date = Date()
@@ -44,8 +42,8 @@ class SessionTest {
         assertThat(context, IsNot(IsNull()))
         assertThat(helper, IsNot(IsNull()))
         assertThat(db, IsNot(IsNull()))
-        assertThat(session, IsNot(IsNull()))
-        assertThat(dao, IsNot(IsNull()))
+        assertThat(session, IsNull())
+        assertThat(dao, IsNull())
     }
 
     @After
@@ -58,6 +56,9 @@ class SessionTest {
 
     @Test
     fun it_should_return_same_location_id() {
+        session = DaoMaster(db).newSession(IdentityScopeType.Session)
+        dao = session?.noteDao
+
         entity?.let { dao?.insert(it) }
 
         val byId1 = dao?.queryBuilder()
@@ -76,6 +77,9 @@ class SessionTest {
 
     @Test
     fun it_should_return_different_location_id() {
+        session = DaoMaster(db).newSession(IdentityScopeType.Session)
+        dao = session?.noteDao
+
         entity?.let { dao?.insert(it) }
 
         val byId1 = dao?.queryBuilder()
@@ -96,6 +100,9 @@ class SessionTest {
 
     @Test
     fun it_should_return_same_location_different_method() {
+        session = DaoMaster(db).newSession(IdentityScopeType.Session)
+        dao = session?.noteDao
+
         entity?.let { dao?.insert(it) }
 
         val byId1 = dao?.loadAll()?.first()
@@ -112,6 +119,9 @@ class SessionTest {
 
     @Test
     fun it_should_return_same_location_different_query() {
+        session = DaoMaster(db).newSession(IdentityScopeType.Session)
+        dao = session?.noteDao
+
         entity?.let { dao?.insert(it) }
 
         val byId1 = dao?.loadAll()?.first()

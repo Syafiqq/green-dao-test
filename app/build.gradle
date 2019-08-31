@@ -27,6 +27,14 @@ android {
     }
 }
 
+greendao {
+    schemaVersion 2
+    //daoPackage "com.github.syafiqq.greendaotest001"
+    //targetGenDir "build/generated/source/greendao"
+    //generateTests true
+    //targetGenDirTests "src/androidTest/java"
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

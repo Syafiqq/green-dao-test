@@ -134,4 +134,25 @@ class SessionTest {
         assertThat(byId1, IsEqual(byId2))
         assertThat(locId1, IsEqual(locId2))
     }
+
+    @Test
+    fun it_should_return_different_location_with_no_session() {
+        session = DaoMaster(db).newSession(IdentityScopeType.None)
+        dao = session?.noteDao
+
+        entity?.let { dao?.insert(it) }
+
+        val byId1 = dao?.queryBuilder()
+            ?.where(NoteDao.Properties.Id.eq(entity?.id))
+            ?.list()?.first()
+        val locId1 = System.identityHashCode(byId1)
+
+        val byId2 = dao?.queryBuilder()
+            ?.where(NoteDao.Properties.Id.eq(entity?.id))
+            ?.list()?.first()
+        val locId2 = System.identityHashCode(byId2)
+
+        assertThat(byId1, IsEqual(byId2))
+        assertThat(locId1, IsNot(IsEqual(locId2)))
+    }
 }

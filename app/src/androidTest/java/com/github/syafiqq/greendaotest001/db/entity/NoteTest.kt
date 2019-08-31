@@ -27,6 +27,7 @@ class NoteTest {
     private var helper: DaoMaster.DevOpenHelper? = null
     private var context: Context? = null
     private var dao: NoteDao? = null
+    private var note : Note? = null
 
     @Before
     fun setUp() {
@@ -35,7 +36,13 @@ class NoteTest {
         db = helper?.writableDb
         session = DaoMaster(db).newSession(IdentityScopeType.Session)
         dao = session?.noteDao
+        note = Note().apply {
+            this.id = 1L
+            this.text = "This is text"
+            this.date = Date()
+        }
 
+        assertThat(note, IsNot(IsNull()))
         assertThat(context, IsNot(IsNull()))
         assertThat(helper, IsNot(IsNull()))
         assertThat(db, IsNot(IsNull()))
@@ -60,20 +67,15 @@ class NoteTest {
 
     @Test
     fun it_should_insert_note() {
-        val note = Note().apply {
-            this.id = 1L
-            this.text = "This is text"
-            this.date = Date()
-        }
+        note?.let { dao?.insert(it) }
 
-        dao?.insert(note)
         val notes = dao?.loadAll()
 
         assertThat(notes, IsInstanceOf(MutableList::class.java))
         assertThat(notes?.size, IsEqual(1))
         val actualNote = notes?.first()
-        assertThat(actualNote?.id, IsEqual(note.id))
-        assertThat(actualNote?.text, IsEqual(note.text))
-        assertThat(actualNote?.date, IsEqual(note.date))
+        assertThat(actualNote?.id, IsEqual(note?.id))
+        assertThat(actualNote?.text, IsEqual(note?.text))
+        assertThat(actualNote?.date, IsEqual(note?.date))
     }
 }

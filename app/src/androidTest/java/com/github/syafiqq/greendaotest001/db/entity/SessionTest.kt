@@ -9,6 +9,7 @@ import com.github.syafiqq.greendaotest001.entity.Note
 import com.github.syafiqq.greendaotest001.entity.NoteDao
 import org.greenrobot.greendao.database.Database
 import org.greenrobot.greendao.identityscope.IdentityScopeType
+import org.greenrobot.greendao.query.CloseableListIterator
 import org.hamcrest.core.IsEqual
 import org.hamcrest.core.IsNot
 import org.hamcrest.core.IsNull
@@ -198,6 +199,30 @@ class SessionTest {
         assertThat(locId2, IsEqual(locId3))
         assertThat(byId3, IsEqual(byId1))
         assertThat(locId3, IsEqual(locId1))
+        byId1?.text = "New Text"
+        assertThat(byId1?.text, IsEqual(byId2?.text))
+    }
+
+    @Test
+    fun it_should_return_same_location_against_lazy_list_iterator() {
+        session = DaoMaster(db).newSession(IdentityScopeType.Session)
+        dao = session?.noteDao
+
+        entity?.let { dao?.insert(it) }
+
+        val byId1 = dao?.queryBuilder()
+            ?.where(NoteDao.Properties.Id.eq(entity?.id))
+            ?.listIterator()?.use(CloseableListIterator<Note>::next)
+        val locId1 = System.identityHashCode(byId1)
+
+
+        val byId2 = dao?.queryBuilder()
+            ?.where(NoteDao.Properties.Id.eq(entity?.id))
+            ?.list()?.first()
+        val locId2 = System.identityHashCode(byId2)
+
+        assertThat(byId1, IsEqual(byId2))
+        assertThat(locId1, IsEqual(locId2))
         byId1?.text = "New Text"
         assertThat(byId1?.text, IsEqual(byId2?.text))
     }

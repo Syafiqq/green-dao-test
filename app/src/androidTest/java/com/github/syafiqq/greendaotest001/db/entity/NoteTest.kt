@@ -78,4 +78,21 @@ class NoteTest {
         assertThat(actualNote?.text, IsEqual(note?.text))
         assertThat(actualNote?.date, IsEqual(note?.date))
     }
+
+    @Test
+    fun it_should_delete_note() {
+        note?.let { dao?.insert(it) }
+
+        var notes = dao?.loadAll()
+
+        assertThat(notes, IsInstanceOf(MutableList::class.java))
+        assertThat(notes?.size, IsEqual(1))
+
+        dao?.deleteByKey(note?.id)
+
+        notes = dao?.loadAll()
+
+        assertThat(notes, IsInstanceOf(MutableList::class.java))
+        assertThat(notes?.size, IsEqual(0))
+    }
 }

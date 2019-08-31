@@ -73,6 +73,8 @@ class SessionTest {
 
         assertThat(byId1, IsEqual(byId2))
         assertThat(locId1, IsEqual(locId2))
+        byId1?.text = "New Text"
+        assertThat(byId1?.text, IsEqual(byId2?.text))
     }
 
     @Test
@@ -96,6 +98,8 @@ class SessionTest {
 
         assertThat(byId1, IsEqual(byId2))
         assertThat(locId1, IsNot(IsEqual(locId2)))
+        byId1?.text = "New Text"
+        assertThat(byId1?.text, IsNot(IsEqual(byId2?.text)))
     }
 
     @Test
@@ -115,6 +119,8 @@ class SessionTest {
 
         assertThat(byId1, IsEqual(byId2))
         assertThat(locId1, IsEqual(locId2))
+        byId1?.text = "New Text"
+        assertThat(byId1?.text, IsEqual(byId2?.text))
     }
 
     @Test
@@ -133,6 +139,8 @@ class SessionTest {
 
         assertThat(byId1, IsEqual(byId2))
         assertThat(locId1, IsEqual(locId2))
+        byId1?.text = "New Text"
+        assertThat(byId1?.text, IsEqual(byId2?.text))
     }
 
     @Test
@@ -154,5 +162,7 @@ class SessionTest {
 
         assertThat(byId1, IsEqual(byId2))
         assertThat(locId1, IsNot(IsEqual(locId2)))
+        byId1?.text = "New Text"
+        assertThat(byId1?.text, IsNot(IsEqual(byId2?.text)))
     }
 }

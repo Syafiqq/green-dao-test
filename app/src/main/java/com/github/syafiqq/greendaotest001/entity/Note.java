@@ -17,6 +17,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity(
+        nameInDb = "notes",
         indexes = {
                 @Index(value = "text, date DESC", unique = true),
         },

@@ -15,6 +15,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity(
+        nameInDb = "users",
         generateGettersSetters = false
 )
 @ToString

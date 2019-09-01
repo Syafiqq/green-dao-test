@@ -37,6 +37,7 @@ public class Note {
 
     @ToOne(joinProperty = "userId")
     private User user;
+
     /**
      * Used to resolve relations
      */

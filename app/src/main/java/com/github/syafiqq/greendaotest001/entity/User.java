@@ -28,8 +28,10 @@ public class User {
     private String name;
     @NotNull
     private String status;
+
     @ToMany(referencedJoinProperty = "userId")
     private List<Note> orders;
+
     /**
      * Used to resolve relations
      */

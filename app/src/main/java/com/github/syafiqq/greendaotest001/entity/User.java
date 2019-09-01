@@ -4,6 +4,7 @@ import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.JoinEntity;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.ToMany;
 
@@ -32,6 +33,13 @@ public class User {
 
     @ToMany(referencedJoinProperty = "userId")
     private List<Note> orders;
+    @ToMany
+    @JoinEntity(
+            entity = UserRole.class,
+            sourceProperty = "userId",
+            targetProperty = "roleId"
+    )
+    private List<Role> roles;
 
     /**
      * Used to resolve relations
@@ -119,6 +127,34 @@ public class User {
             throw new DaoException("Entity is detached from DAO context");
         }
         myDao.update(this);
+    }
+
+    /**
+     * To-many relationship, resolved on first access (and after reset).
+     * Changes to to-many relations are not persisted, make changes to the target entity.
+     */
+    @Generated(hash = 353725095)
+    public List<Role> getRoles() {
+        if (roles == null) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            RoleDao targetDao = daoSession.getRoleDao();
+            List<Role> rolesNew = targetDao._queryUser_Roles(id);
+            synchronized (this) {
+                if (roles == null) {
+                    roles = rolesNew;
+                }
+            }
+        }
+        return roles;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    @Generated(hash = 254386649)
+    public synchronized void resetRoles() {
+        roles = null;
     }
 
     /** called by internal mechanisms, do not call yourself. */

@@ -7,6 +7,7 @@ import com.github.syafiqq.greendaotest001.entity.DaoMaster
 import com.github.syafiqq.greendaotest001.entity.DaoSession
 import com.github.syafiqq.greendaotest001.entity.Note
 import com.github.syafiqq.greendaotest001.entity.NoteDao
+import org.greenrobot.greendao.DaoException
 import org.greenrobot.greendao.database.Database
 import org.greenrobot.greendao.identityscope.IdentityScopeType
 import org.hamcrest.core.IsEqual
@@ -63,6 +64,14 @@ class NoteTest {
 
         assertThat(entities, IsInstanceOf(MutableList::class.java))
         assertThat(entities?.size, IsEqual(0))
+    }
+
+    fun it_should_return_getter() {
+        assertThat(entity?.id, IsNull())
+        assertThat(entity?.text, IsNot(IsNull()))
+        assertThat(entity?.date, IsNot(IsNull()))
+        assertThat(entity?.userId, IsNull())
+        assertThat(entity?.user, IsNull())
     }
 
     @Test

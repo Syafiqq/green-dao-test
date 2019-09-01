@@ -9,7 +9,18 @@ import org.greenrobot.greendao.annotation.ToMany;
 
 import java.util.List;
 
-@Entity
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Entity(
+        generateGettersSetters = false
+)
+@ToString
+@EqualsAndHashCode
+@Getter
+@Setter
 public class User {
     @Id
     private Long id;
@@ -39,30 +50,6 @@ public class User {
 
     @Generated(hash = 586692638)
     public User() {
-    }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getStatus() {
-        return this.status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     /**

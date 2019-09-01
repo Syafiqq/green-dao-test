@@ -11,11 +11,21 @@ import org.greenrobot.greendao.annotation.ToOne;
 
 import java.util.Date;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity(
         indexes = {
                 @Index(value = "text, date DESC", unique = true),
-        }
+        },
+        generateGettersSetters = false
 )
+@ToString
+@EqualsAndHashCode
+@Getter
+@Setter
 public class Note {
     @Id
     private Long id;
@@ -50,38 +60,6 @@ public class Note {
 
     @Generated(hash = 1272611929)
     public Note() {
-    }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getText() {
-        return this.text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public Date getDate() {
-        return this.date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Long getUserId() {
-        return this.userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     /**

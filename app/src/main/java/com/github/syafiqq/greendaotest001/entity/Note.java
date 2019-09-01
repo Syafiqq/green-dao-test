@@ -28,13 +28,25 @@ import lombok.ToString;
 @Getter
 @Setter
 public class Note {
+
+    /*
+     * For Column Property
+     * */
+
     @Id
     private Long id;
+
     @NotNull
     private String text;
+
     private Date date;
+
     @Property(nameInDb = "user_id")
     private Long userId;
+
+    /*
+     * For Relation
+     * */
 
     @ToOne(joinProperty = "userId")
     private User user;

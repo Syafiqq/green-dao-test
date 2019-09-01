@@ -19,10 +19,17 @@ import lombok.ToString;
 @Getter
 @Setter
 public class UserRole {
+
+    /*
+     * For Column Property
+     * */
+
     @Id
     private Long id;
+
     @Property(nameInDb = "user_id")
     private Long userId;
+
     @Property(nameInDb = "role_id")
     private Long roleId;
 

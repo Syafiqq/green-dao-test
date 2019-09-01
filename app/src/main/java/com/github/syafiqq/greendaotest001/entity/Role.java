@@ -24,10 +24,20 @@ import lombok.ToString;
 @Getter
 @Setter
 public class Role {
+
+    /*
+     * For Column Property
+     * */
+
     @Id
     private Long id;
+
     @NotNull
     private String name;
+
+    /*
+     * For Relation
+     * */
 
     @ToMany
     @JoinEntity(

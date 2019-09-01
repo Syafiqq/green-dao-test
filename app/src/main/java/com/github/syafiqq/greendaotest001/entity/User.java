@@ -26,17 +26,30 @@ import lombok.ToString;
 @Getter
 @Setter
 public class User {
+
+    /*
+     * For Column Property
+     * */
+
     @Id
     private Long id;
+
     @NotNull
     private String name;
+
     @NotNull
     private String status;
+
     @Property(nameInDb = "parent_id")
     private Long parentId;
 
+    /*
+     * For Relation
+     * */
+
     @ToMany(referencedJoinProperty = "userId")
     private List<Note> orders;
+
     @ToMany
     @JoinEntity(
             entity = UserRole.class,
@@ -44,8 +57,10 @@ public class User {
             targetProperty = "roleId"
     )
     private List<Role> roles;
+
     @ToOne(joinProperty = "parentId")
     private User parent;
+
     @ToMany(referencedJoinProperty = "parentId")
     private List<User> children;
 

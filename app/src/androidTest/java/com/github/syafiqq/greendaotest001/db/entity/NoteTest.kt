@@ -66,6 +66,7 @@ class NoteTest {
         assertThat(entities?.size, IsEqual(0))
     }
 
+    @Test
     fun it_should_return_getter() {
         assertThat(entity?.id, IsNull())
         assertThat(entity?.text, IsNot(IsNull()))

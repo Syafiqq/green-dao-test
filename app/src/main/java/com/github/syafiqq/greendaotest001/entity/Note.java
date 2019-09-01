@@ -36,9 +36,11 @@ public class Note {
     @Id
     private Long id;
 
+    @Property(nameInDb = "text")
     @NotNull
     private String text;
 
+    @Property(nameInDb = "date")
     private Date date;
 
     @Property(nameInDb = "user_id")

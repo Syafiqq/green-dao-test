@@ -34,9 +34,11 @@ public class User {
     @Id
     private Long id;
 
+    @Property(nameInDb = "name")
     @NotNull
     private String name;
 
+    @Property(nameInDb = "status")
     @NotNull
     private String status;
 

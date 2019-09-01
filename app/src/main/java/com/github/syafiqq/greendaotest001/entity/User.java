@@ -6,7 +6,9 @@ import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.JoinEntity;
 import org.greenrobot.greendao.annotation.NotNull;
+import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.ToMany;
+import org.greenrobot.greendao.annotation.ToOne;
 
 import java.util.List;
 
@@ -30,6 +32,8 @@ public class User {
     private String name;
     @NotNull
     private String status;
+    @Property(nameInDb = "parent_id")
+    private Long parentId;
 
     @ToMany(referencedJoinProperty = "userId")
     private List<Note> orders;
@@ -40,6 +44,10 @@ public class User {
             targetProperty = "roleId"
     )
     private List<Role> roles;
+    @ToOne(joinProperty = "parentId")
+    private User parent;
+    @ToMany(referencedJoinProperty = "parentId")
+    private List<User> children;
 
     /**
      * Used to resolve relations

@@ -28,7 +28,7 @@ android {
 }
 
 greendao {
-    schemaVersion 2
+    schemaVersion 1
     //daoPackage "com.github.syafiqq.greendaotest001"
     //targetGenDir "build/generated/source/greendao"
     //generateTests true

@@ -10,5 +10,6 @@
 /gradle
 /gradlew*
 /db*
+!/db
 /cmds/*
 !/cmds/*.example.sh

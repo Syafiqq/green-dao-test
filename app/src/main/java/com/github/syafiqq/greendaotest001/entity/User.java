@@ -75,11 +75,15 @@ public class User {
     @Generated(hash = 1507654846)
     private transient UserDao myDao;
 
-    @Generated(hash = 1882300885)
-    public User(Long id, @NotNull String name, @NotNull String status) {
+    @Generated(hash = 1293412156)
+    private transient Long parent__resolvedKey;
+
+    @Generated(hash = 36145661)
+    public User(Long id, @NotNull String name, @NotNull String status, Long parentId) {
         this.id = id;
         this.name = name;
         this.status = status;
+        this.parentId = parentId;
     }
 
     @Generated(hash = 586692638)
@@ -178,6 +182,63 @@ public class User {
     @Generated(hash = 254386649)
     public synchronized void resetRoles() {
         roles = null;
+    }
+
+    /** To-one relationship, resolved on first access. */
+    @Generated(hash = 273916361)
+    public User getParent() {
+        Long __key = this.parentId;
+        if (parent__resolvedKey == null || !parent__resolvedKey.equals(__key)) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            UserDao targetDao = daoSession.getUserDao();
+            User parentNew = targetDao.load(__key);
+            synchronized (this) {
+                parent = parentNew;
+                parent__resolvedKey = __key;
+            }
+        }
+        return parent;
+    }
+
+    /** called by internal mechanisms, do not call yourself. */
+    @Generated(hash = 644276634)
+    public void setParent(User parent) {
+        synchronized (this) {
+            this.parent = parent;
+            parentId = parent == null ? null : parent.getId();
+            parent__resolvedKey = parentId;
+        }
+    }
+
+    /**
+     * To-many relationship, resolved on first access (and after reset).
+     * Changes to to-many relations are not persisted, make changes to the target entity.
+     */
+    @Generated(hash = 1414846852)
+    public List<User> getChildren() {
+        if (children == null) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            UserDao targetDao = daoSession.getUserDao();
+            List<User> childrenNew = targetDao._queryUser_Children(id);
+            synchronized (this) {
+                if (children == null) {
+                    children = childrenNew;
+                }
+            }
+        }
+        return children;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    @Generated(hash = 1590975152)
+    public synchronized void resetChildren() {
+        children = null;
     }
 
     /** called by internal mechanisms, do not call yourself. */

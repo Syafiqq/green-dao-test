@@ -60,6 +60,7 @@ public class User {
     )
     private List<Role> roles;
 
+    @EqualsAndHashCode.Exclude
     @ToOne(joinProperty = "parentId")
     private User parent;
 

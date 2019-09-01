@@ -50,6 +50,7 @@ public class Note {
      * For Relation
      * */
 
+    @EqualsAndHashCode.Exclude
     @ToOne(joinProperty = "userId")
     private User user;
 

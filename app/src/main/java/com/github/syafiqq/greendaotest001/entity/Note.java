@@ -7,7 +7,6 @@ import org.greenrobot.greendao.annotation.NotNull;
 
 import java.util.Date;
 
-import lombok.Data;
 import org.greenrobot.greendao.annotation.Generated;
 
 @Entity(
@@ -17,7 +16,6 @@ import org.greenrobot.greendao.annotation.Generated;
         generateConstructors = false,
         generateGettersSetters = false
 )
-@Data
 public class Note {
     @Id
     private Long id;

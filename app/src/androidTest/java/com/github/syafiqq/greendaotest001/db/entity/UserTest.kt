@@ -24,14 +24,14 @@ class UserTest {
     private var session: DaoSession? = null
     private var db: Database? = null
     private var helper: DaoMaster.DevOpenHelper? = null
-    private var conname: Context? = null
+    private var context: Context? = null
     private var dao: UserDao? = null
     private var entity : User? = null
 
     @Before
     fun setUp() {
-        conname = InstrumentationRegistry.getInstrumentation().targetContext
-        helper = DaoMaster.DevOpenHelper(conname, "db-test")
+        context = InstrumentationRegistry.getInstrumentation().targetContext
+        helper = DaoMaster.DevOpenHelper(context, "db-test")
         db = helper?.writableDb
         session = DaoMaster(db).newSession(IdentityScopeType.Session)
         dao = session?.userDao
@@ -41,7 +41,7 @@ class UserTest {
         }
 
         Assert.assertThat(entity, IsNot(IsNull()))
-        Assert.assertThat(conname, IsNot(IsNull()))
+        Assert.assertThat(context, IsNot(IsNull()))
         Assert.assertThat(helper, IsNot(IsNull()))
         Assert.assertThat(db, IsNot(IsNull()))
         Assert.assertThat(session, IsNot(IsNull()))

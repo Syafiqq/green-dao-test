@@ -1,4 +1,4 @@
-package com.github.syafiqq.greendaotest001.db.entity
+package com.github.syafiqq.greendaotest001.db.session
 
 import android.content.Context
 import android.database.sqlite.SQLiteConstraintException

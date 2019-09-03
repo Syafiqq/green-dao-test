@@ -90,6 +90,17 @@ class OneToOneTest {
         assertThat(actualEntity1?.user, IsEqual(entity2))
         assertThat(actualEntity1?.userId, IsNot(IsNull()))
         assertThat(actualEntity1?.userId, IsEqual(entity2?.id))
+
+        val entities2 = dao2?.loadAll()
+        val actualEntity2 = entities2?.first()
+        assertThat(actualEntity2, IsNot(IsNull()))
+        assertThat(actualEntity2?.notes, IsNot(IsNull()))
+        assertThat(actualEntity2?.notes?.size, IsEqual(1))
+        actualEntity2?.notes?.forEach {n ->
+            assertThat(n?.user, IsNot(IsNull()))
+            assertThat(n?.userId, IsNot(IsNull()))
+            assertThat(n?.userId, IsEqual(entity2?.id))
+        }
     }
 
     @Test
@@ -108,6 +119,17 @@ class OneToOneTest {
         assertThat(actualEntity1?.user, IsEqual(entity2))
         assertThat(actualEntity1?.userId, IsNot(IsNull()))
         assertThat(actualEntity1?.userId, IsEqual(entity2?.id))
+
+        val entities2 = dao2?.loadAll()
+        val actualEntity2 = entities2?.first()
+        assertThat(actualEntity2, IsNot(IsNull()))
+        assertThat(actualEntity2?.notes, IsNot(IsNull()))
+        assertThat(actualEntity2?.notes?.size, IsEqual(1))
+        actualEntity2?.notes?.forEach {n ->
+            assertThat(n?.user, IsNot(IsNull()))
+            assertThat(n?.userId, IsNot(IsNull()))
+            assertThat(n?.userId, IsEqual(entity2?.id))
+        }
     }
 
     @Test
@@ -133,6 +155,17 @@ class OneToOneTest {
         assertThat(actualEntity1?.user, IsEqual(entity2))
         assertThat(actualEntity1?.userId, IsNot(IsNull()))
         assertThat(actualEntity1?.userId, IsEqual(entity2?.id))
+
+        val entities2 = dao2?.loadAll()
+        val actualEntity2 = entities2?.first()
+        assertThat(actualEntity2, IsNot(IsNull()))
+        assertThat(actualEntity2?.notes, IsNot(IsNull()))
+        assertThat(actualEntity2?.notes?.size, IsEqual(1))
+        actualEntity2?.notes?.forEach {n ->
+            assertThat(n?.user, IsNot(IsNull()))
+            assertThat(n?.userId, IsNot(IsNull()))
+            assertThat(n?.userId, IsEqual(entity2?.id))
+        }
     }
 
     @Test

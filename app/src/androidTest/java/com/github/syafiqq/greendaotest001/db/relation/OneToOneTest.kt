@@ -87,9 +87,9 @@ class OneToOneTest {
         val entities1 = dao1?.loadAll()
         val actualEntity1 = entities1?.first()
         assertThat(actualEntity1, IsNot(IsNull()))
+        assertThat(actualEntity1?.user, IsEqual(entity2))
         assertThat(actualEntity1?.userId, IsNot(IsNull()))
         assertThat(actualEntity1?.userId, IsEqual(entity2?.id))
-        assertThat(actualEntity1?.user, IsEqual(entity2))
     }
 
     @Test
@@ -105,9 +105,9 @@ class OneToOneTest {
         val entities1 = dao1?.loadAll()
         val actualEntity1 = entities1?.first()
         assertThat(actualEntity1, IsNot(IsNull()))
+        assertThat(actualEntity1?.user, IsEqual(entity2))
         assertThat(actualEntity1?.userId, IsNot(IsNull()))
         assertThat(actualEntity1?.userId, IsEqual(entity2?.id))
-        assertThat(actualEntity1?.user, IsEqual(entity2))
     }
 
     @Test
@@ -130,9 +130,9 @@ class OneToOneTest {
         val entities1 = dao1?.loadAll()
         val actualEntity1 = entities1?.first()
         assertThat(actualEntity1, IsNot(IsNull()))
+        assertThat(actualEntity1?.user, IsEqual(entity2))
         assertThat(actualEntity1?.userId, IsNot(IsNull()))
         assertThat(actualEntity1?.userId, IsEqual(entity2?.id))
-        assertThat(actualEntity1?.user, IsEqual(entity2))
     }
 
     @Test

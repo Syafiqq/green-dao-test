@@ -50,7 +50,7 @@ public class User {
      * */
 
     @ToMany(referencedJoinProperty = "userId")
-    private List<Note> orders;
+    private List<Note> notes;
 
     @ToMany
     @JoinEntity(
@@ -97,30 +97,28 @@ public class User {
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 1151083587)
-    public List<Note> getOrders() {
-        if (orders == null) {
+    @Generated(hash = 197974102)
+    public List<Note> getNotes() {
+        if (notes == null) {
             final DaoSession daoSession = this.daoSession;
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
             NoteDao targetDao = daoSession.getNoteDao();
-            List<Note> ordersNew = targetDao._queryUser_Orders(id);
+            List<Note> notesNew = targetDao._queryUser_Notes(id);
             synchronized (this) {
-                if (orders == null) {
-                    orders = ordersNew;
+                if (notes == null) {
+                    notes = notesNew;
                 }
             }
         }
-        return orders;
+        return notes;
     }
 
-    /**
-     * Resets a to-many relationship, making the next get call to query for a fresh result.
-     */
-    @Generated(hash = 1446109810)
-    public synchronized void resetOrders() {
-        orders = null;
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    @Generated(hash = 2032098259)
+    public synchronized void resetNotes() {
+        notes = null;
     }
 
     /**

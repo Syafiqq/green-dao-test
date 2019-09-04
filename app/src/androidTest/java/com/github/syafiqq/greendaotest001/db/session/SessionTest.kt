@@ -10,9 +10,7 @@ import com.github.syafiqq.greendaotest001.entity.NoteDao
 import org.greenrobot.greendao.database.Database
 import org.greenrobot.greendao.identityscope.IdentityScopeType
 import org.greenrobot.greendao.query.CloseableListIterator
-import org.hamcrest.core.IsEqual
-import org.hamcrest.core.IsNot
-import org.hamcrest.core.IsNull
+import org.hamcrest.CoreMatchers.*
 import org.junit.After
 import org.junit.Assert.assertThat
 import org.junit.Before
@@ -39,12 +37,12 @@ class SessionTest {
             this.date = Date()
         }
 
-        assertThat(entity, IsNot(IsNull()))
-        assertThat(context, IsNot(IsNull()))
-        assertThat(helper, IsNot(IsNull()))
-        assertThat(db, IsNot(IsNull()))
-        assertThat(session, IsNull())
-        assertThat(dao, IsNull())
+        assertThat(entity, `is`(notNullValue()))
+        assertThat(context, `is`(notNullValue()))
+        assertThat(helper, `is`(notNullValue()))
+        assertThat(db, `is`(notNullValue()))
+        assertThat(session, `is`(nullValue()))
+        assertThat(dao, `is`(nullValue()))
     }
 
     @After
@@ -72,10 +70,10 @@ class SessionTest {
             ?.list()?.first()
         val locId2 = System.identityHashCode(byId2)
 
-        assertThat(byId1, IsEqual(byId2))
-        assertThat(locId1, IsEqual(locId2))
+        assertThat(byId1, `is`(equalTo(byId2)))
+        assertThat(locId1, `is`(equalTo(locId2)))
         byId1?.text = "New Text"
-        assertThat(byId1?.text, IsEqual(byId2?.text))
+        assertThat(byId1?.text, `is`(equalTo(byId2?.text)))
     }
 
     @Test
@@ -97,10 +95,10 @@ class SessionTest {
             ?.list()?.first()
         val locId2 = System.identityHashCode(byId2)
 
-        assertThat(byId1, IsEqual(byId2))
-        assertThat(locId1, IsNot(IsEqual(locId2)))
+        assertThat(byId1, `is`(equalTo(byId2)))
+        assertThat(locId1, `is`(not(equalTo(locId2))))
         byId1?.text = "New Text"
-        assertThat(byId1?.text, IsNot(IsEqual(byId2?.text)))
+        assertThat(byId1?.text, `is`(not(equalTo(byId2?.text))))
     }
 
     @Test
@@ -118,10 +116,10 @@ class SessionTest {
             ?.list()?.first()
         val locId2 = System.identityHashCode(byId2)
 
-        assertThat(byId1, IsEqual(byId2))
-        assertThat(locId1, IsEqual(locId2))
+        assertThat(byId1, `is`(equalTo(byId2)))
+        assertThat(locId1, `is`(equalTo(locId2)))
         byId1?.text = "New Text"
-        assertThat(byId1?.text, IsEqual(byId2?.text))
+        assertThat(byId1?.text, `is`(equalTo(byId2?.text)))
     }
 
     @Test
@@ -138,10 +136,10 @@ class SessionTest {
             ?.list()?.first()
         val locId2 = System.identityHashCode(byId2)
 
-        assertThat(byId1, IsEqual(byId2))
-        assertThat(locId1, IsEqual(locId2))
+        assertThat(byId1, `is`(equalTo(byId2)))
+        assertThat(locId1, `is`(equalTo(locId2)))
         byId1?.text = "New Text"
-        assertThat(byId1?.text, IsEqual(byId2?.text))
+        assertThat(byId1?.text, `is`(equalTo(byId2?.text)))
     }
 
     @Test
@@ -161,10 +159,10 @@ class SessionTest {
             ?.list()?.first()
         val locId2 = System.identityHashCode(byId2)
 
-        assertThat(byId1, IsEqual(byId2))
-        assertThat(locId1, IsNot(IsEqual(locId2)))
+        assertThat(byId1, `is`(equalTo(byId2)))
+        assertThat(locId1, `is`(not(equalTo(locId2))))
         byId1?.text = "New Text"
-        assertThat(byId1?.text, IsNot(IsEqual(byId2?.text)))
+        assertThat(byId1?.text, `is`(not(equalTo(byId2?.text))))
     }
 
     @Test
@@ -193,14 +191,14 @@ class SessionTest {
         lazy?.close()
         val locId3 = System.identityHashCode(byId3)
 
-        assertThat(byId1, IsEqual(byId2))
-        assertThat(locId1, IsEqual(locId2))
-        assertThat(byId2, IsEqual(byId3))
-        assertThat(locId2, IsEqual(locId3))
-        assertThat(byId3, IsEqual(byId1))
-        assertThat(locId3, IsEqual(locId1))
+        assertThat(byId1, `is`(equalTo(byId2)))
+        assertThat(locId1, `is`(equalTo(locId2)))
+        assertThat(byId2, `is`(equalTo(byId3)))
+        assertThat(locId2, `is`(equalTo(locId3)))
+        assertThat(byId3, `is`(equalTo(byId1)))
+        assertThat(locId3, `is`(equalTo(locId1)))
         byId1?.text = "New Text"
-        assertThat(byId1?.text, IsEqual(byId2?.text))
+        assertThat(byId1?.text, `is`(equalTo(byId2?.text)))
     }
 
     @Test
@@ -221,9 +219,9 @@ class SessionTest {
             ?.list()?.first()
         val locId2 = System.identityHashCode(byId2)
 
-        assertThat(byId1, IsEqual(byId2))
-        assertThat(locId1, IsEqual(locId2))
+        assertThat(byId1, `is`(equalTo(byId2)))
+        assertThat(locId1, `is`(equalTo(locId2)))
         byId1?.text = "New Text"
-        assertThat(byId1?.text, IsEqual(byId2?.text))
+        assertThat(byId1?.text, `is`(equalTo(byId2?.text)))
     }
 }

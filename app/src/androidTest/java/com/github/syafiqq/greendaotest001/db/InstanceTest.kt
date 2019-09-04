@@ -7,8 +7,7 @@ import com.github.syafiqq.greendaotest001.entity.DaoMaster
 import com.github.syafiqq.greendaotest001.entity.DaoSession
 import org.greenrobot.greendao.database.Database
 import org.greenrobot.greendao.identityscope.IdentityScopeType
-import org.hamcrest.core.IsNot
-import org.hamcrest.core.IsNull
+import org.hamcrest.CoreMatchers.*
 import org.junit.After
 import org.junit.Assert.assertThat
 import org.junit.Test
@@ -36,14 +35,14 @@ class InstanceTest {
     @Test
     fun it_should_instantiate_context() {
         context = InstrumentationRegistry.getInstrumentation().targetContext
-        assertThat(context, IsNot(IsNull()))
+        assertThat(context, `is`(notNullValue()))
     }
 
     @Test
     fun it_should_instantiate_db_helper() {
         context = InstrumentationRegistry.getInstrumentation().targetContext
         helper = DaoMaster.DevOpenHelper(context, "db-test")
-        assertThat(helper, IsNot(IsNull()))
+        assertThat(helper, `is`(notNullValue()))
     }
 
     @Test
@@ -51,7 +50,7 @@ class InstanceTest {
         context = InstrumentationRegistry.getInstrumentation().targetContext
         helper = DaoMaster.DevOpenHelper(context, "db-test")
         db = helper?.writableDb
-        assertThat(db, IsNot(IsNull()))
+        assertThat(db, `is`(notNullValue()))
     }
 
     @Test
@@ -60,6 +59,6 @@ class InstanceTest {
         helper = DaoMaster.DevOpenHelper(context, "db-test")
         db = helper?.writableDb
         session = DaoMaster(db).newSession(IdentityScopeType.Session)
-        assertThat(session, IsNot(IsNull()))
+        assertThat(session, `is`(notNullValue()))
     }
 }

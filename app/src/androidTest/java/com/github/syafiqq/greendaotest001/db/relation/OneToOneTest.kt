@@ -8,9 +8,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.github.syafiqq.greendaotest001.entity.*
 import org.greenrobot.greendao.database.Database
 import org.greenrobot.greendao.identityscope.IdentityScopeType
-import org.hamcrest.core.IsEqual
-import org.hamcrest.core.IsNot
-import org.hamcrest.core.IsNull
+import org.hamcrest.CoreMatchers.*
 import org.junit.After
 import org.junit.Assert.assertThat
 import org.junit.Before
@@ -46,14 +44,14 @@ class OneToOneTest {
             status = "active"
         }
 
-        assertThat(entity1, IsNot(IsNull()))
-        assertThat(entity2, IsNot(IsNull()))
-        assertThat(context, IsNot(IsNull()))
-        assertThat(helper, IsNot(IsNull()))
-        assertThat(db, IsNot(IsNull()))
-        assertThat(session, IsNot(IsNull()))
-        assertThat(dao1, IsNot(IsNull()))
-        assertThat(dao2, IsNot(IsNull()))
+        assertThat(entity1, `is`(notNullValue()))
+        assertThat(entity2, `is`(notNullValue()))
+        assertThat(context, `is`(notNullValue()))
+        assertThat(helper, `is`(notNullValue()))
+        assertThat(db, `is`(notNullValue()))
+        assertThat(session, `is`(notNullValue()))
+        assertThat(dao1, `is`(notNullValue()))
+        assertThat(dao2, `is`(notNullValue()))
     }
 
     @After
@@ -70,8 +68,8 @@ class OneToOneTest {
         entity1?.let { dao1?.insert(it) }
         entity2?.let { dao2?.insert(it) }
 
-        assertThat(dao1?.count(), IsEqual(1L))
-        assertThat(dao2?.count(), IsEqual(1L))
+        assertThat(dao1?.count(), `is`(equalTo(1L)))
+        assertThat(dao2?.count(), `is`(equalTo(1L)))
     }
 
     @Test
@@ -81,25 +79,25 @@ class OneToOneTest {
         entity1?.user = entity2
         entity1?.let { dao1?.update(it) }
 
-        assertThat(dao1?.count(), IsEqual(1L))
-        assertThat(dao2?.count(), IsEqual(1L))
+        assertThat(dao1?.count(), `is`(equalTo(1L)))
+        assertThat(dao2?.count(), `is`(equalTo(1L)))
 
         val entities1 = dao1?.loadAll()
         val actualEntity1 = entities1?.first()
-        assertThat(actualEntity1, IsNot(IsNull()))
-        assertThat(actualEntity1?.user, IsEqual(entity2))
-        assertThat(actualEntity1?.userId, IsNot(IsNull()))
-        assertThat(actualEntity1?.userId, IsEqual(entity2?.id))
+        assertThat(actualEntity1, `is`(notNullValue()))
+        assertThat(actualEntity1?.user, `is`(equalTo(entity2)))
+        assertThat(actualEntity1?.userId, `is`(notNullValue()))
+        assertThat(actualEntity1?.userId, `is`(equalTo(entity2?.id)))
 
         val entities2 = dao2?.loadAll()
         val actualEntity2 = entities2?.first()
-        assertThat(actualEntity2, IsNot(IsNull()))
-        assertThat(actualEntity2?.notes, IsNot(IsNull()))
-        assertThat(actualEntity2?.notes?.size, IsEqual(1))
+        assertThat(actualEntity2, `is`(notNullValue()))
+        assertThat(actualEntity2?.notes, `is`(notNullValue()))
+        assertThat(actualEntity2?.notes?.size, `is`(equalTo(1)))
         actualEntity2?.notes?.forEach {n ->
-            assertThat(n?.user, IsNot(IsNull()))
-            assertThat(n?.userId, IsNot(IsNull()))
-            assertThat(n?.userId, IsEqual(entity2?.id))
+            assertThat(n?.user, `is`(notNullValue()))
+            assertThat(n?.userId, `is`(notNullValue()))
+            assertThat(n?.userId, `is`(equalTo(entity2?.id)))
         }
     }
 
@@ -110,25 +108,25 @@ class OneToOneTest {
         entity1?.user = entity2
         entity1?.let { dao1?.save(it) }
 
-        assertThat(dao1?.count(), IsEqual(1L))
-        assertThat(dao2?.count(), IsEqual(1L))
+        assertThat(dao1?.count(), `is`(equalTo(1L)))
+        assertThat(dao2?.count(), `is`(equalTo(1L)))
 
         val entities1 = dao1?.loadAll()
         val actualEntity1 = entities1?.first()
-        assertThat(actualEntity1, IsNot(IsNull()))
-        assertThat(actualEntity1?.user, IsEqual(entity2))
-        assertThat(actualEntity1?.userId, IsNot(IsNull()))
-        assertThat(actualEntity1?.userId, IsEqual(entity2?.id))
+        assertThat(actualEntity1, `is`(notNullValue()))
+        assertThat(actualEntity1?.user, `is`(equalTo(entity2)))
+        assertThat(actualEntity1?.userId, `is`(notNullValue()))
+        assertThat(actualEntity1?.userId, `is`(equalTo(entity2?.id)))
 
         val entities2 = dao2?.loadAll()
         val actualEntity2 = entities2?.first()
-        assertThat(actualEntity2, IsNot(IsNull()))
-        assertThat(actualEntity2?.notes, IsNot(IsNull()))
-        assertThat(actualEntity2?.notes?.size, IsEqual(1))
+        assertThat(actualEntity2, `is`(notNullValue()))
+        assertThat(actualEntity2?.notes, `is`(notNullValue()))
+        assertThat(actualEntity2?.notes?.size, `is`(equalTo(1)))
         actualEntity2?.notes?.forEach {n ->
-            assertThat(n?.user, IsNot(IsNull()))
-            assertThat(n?.userId, IsNot(IsNull()))
-            assertThat(n?.userId, IsEqual(entity2?.id))
+            assertThat(n?.user, `is`(notNullValue()))
+            assertThat(n?.userId, `is`(notNullValue()))
+            assertThat(n?.userId, `is`(equalTo(entity2?.id)))
         }
     }
 
@@ -146,25 +144,25 @@ class OneToOneTest {
             db?.endTransaction()
         }
 
-        assertThat(dao1?.count(), IsEqual(1L))
-        assertThat(dao2?.count(), IsEqual(1L))
+        assertThat(dao1?.count(), `is`(equalTo(1L)))
+        assertThat(dao2?.count(), `is`(equalTo(1L)))
 
         val entities1 = dao1?.loadAll()
         val actualEntity1 = entities1?.first()
-        assertThat(actualEntity1, IsNot(IsNull()))
-        assertThat(actualEntity1?.user, IsEqual(entity2))
-        assertThat(actualEntity1?.userId, IsNot(IsNull()))
-        assertThat(actualEntity1?.userId, IsEqual(entity2?.id))
+        assertThat(actualEntity1, `is`(notNullValue()))
+        assertThat(actualEntity1?.user, `is`(equalTo(entity2)))
+        assertThat(actualEntity1?.userId, `is`(notNullValue()))
+        assertThat(actualEntity1?.userId, `is`(equalTo(entity2?.id)))
 
         val entities2 = dao2?.loadAll()
         val actualEntity2 = entities2?.first()
-        assertThat(actualEntity2, IsNot(IsNull()))
-        assertThat(actualEntity2?.notes, IsNot(IsNull()))
-        assertThat(actualEntity2?.notes?.size, IsEqual(1))
+        assertThat(actualEntity2, `is`(notNullValue()))
+        assertThat(actualEntity2?.notes, `is`(notNullValue()))
+        assertThat(actualEntity2?.notes?.size, `is`(equalTo(1)))
         actualEntity2?.notes?.forEach {n ->
-            assertThat(n?.user, IsNot(IsNull()))
-            assertThat(n?.userId, IsNot(IsNull()))
-            assertThat(n?.userId, IsEqual(entity2?.id))
+            assertThat(n?.user, `is`(notNullValue()))
+            assertThat(n?.userId, `is`(notNullValue()))
+            assertThat(n?.userId, `is`(equalTo(entity2?.id)))
         }
     }
 
@@ -173,8 +171,8 @@ class OneToOneTest {
         entity1?.user = entity2
         entity1?.let { dao1?.insert(it) }
 
-        assertThat(dao1?.count(), IsEqual(1L))
-        assertThat(dao2?.count(), IsEqual(0L))
+        assertThat(dao1?.count(), `is`(equalTo(1L)))
+        assertThat(dao2?.count(), `is`(equalTo(0L)))
     }
 
     @Test(expected = SQLiteConstraintException::class)

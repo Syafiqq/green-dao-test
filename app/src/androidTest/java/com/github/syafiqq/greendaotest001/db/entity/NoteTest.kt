@@ -10,10 +10,7 @@ import com.github.syafiqq.greendaotest001.entity.NoteDao
 import org.greenrobot.greendao.DaoException
 import org.greenrobot.greendao.database.Database
 import org.greenrobot.greendao.identityscope.IdentityScopeType
-import org.hamcrest.core.IsEqual
-import org.hamcrest.core.IsInstanceOf
-import org.hamcrest.core.IsNot
-import org.hamcrest.core.IsNull
+import org.hamcrest.CoreMatchers.*
 import org.junit.After
 import org.junit.Assert.assertThat
 import org.junit.Before
@@ -42,12 +39,12 @@ class NoteTest {
             this.date = Date()
         }
 
-        assertThat(entity, IsNot(IsNull()))
-        assertThat(context, IsNot(IsNull()))
-        assertThat(helper, IsNot(IsNull()))
-        assertThat(db, IsNot(IsNull()))
-        assertThat(session, IsNot(IsNull()))
-        assertThat(dao, IsNot(IsNull()))
+        assertThat(entity, `is`(notNullValue()))
+        assertThat(context, `is`(notNullValue()))
+        assertThat(helper, `is`(notNullValue()))
+        assertThat(db, `is`(notNullValue()))
+        assertThat(session, `is`(notNullValue()))
+        assertThat(dao, `is`(notNullValue()))
     }
 
     @After
@@ -62,17 +59,17 @@ class NoteTest {
     fun it_should_select_all_entities() {
         val entities = dao?.loadAll()
 
-        assertThat(entities, IsInstanceOf(MutableList::class.java))
-        assertThat(entities?.size, IsEqual(0))
+        assertThat(entities, `is`(instanceOf(MutableList::class.java)))
+        assertThat(entities?.size, `is`(equalTo(0)))
     }
 
     @Test
     fun it_should_return_getter() {
-        assertThat(entity?.id, IsNull())
-        assertThat(entity?.text, IsNot(IsNull()))
-        assertThat(entity?.date, IsNot(IsNull()))
-        assertThat(entity?.userId, IsNull())
-        assertThat(entity?.user, IsNull())
+        assertThat(entity?.id, `is`(nullValue()))
+        assertThat(entity?.text, `is`(notNullValue()))
+        assertThat(entity?.date, `is`(notNullValue()))
+        assertThat(entity?.userId, `is`(nullValue()))
+        assertThat(entity?.user, `is`(nullValue()))
     }
 
     @Test
@@ -81,13 +78,13 @@ class NoteTest {
 
         val entities = dao?.loadAll()
 
-        assertThat(entities, IsInstanceOf(MutableList::class.java))
-        assertThat(entities?.size, IsEqual(1))
+        assertThat(entities, `is`(instanceOf(MutableList::class.java)))
+        assertThat(entities?.size, `is`(equalTo(1)))
         val actualEntity = entities?.first()
-        assertThat(actualEntity?.id, IsEqual(entity?.id))
-        assertThat(actualEntity?.id, IsEqual(1L))
-        assertThat(actualEntity?.text, IsEqual(entity?.text))
-        assertThat(actualEntity?.date, IsEqual(entity?.date))
+        assertThat(actualEntity?.id, `is`(equalTo(entity?.id)))
+        assertThat(actualEntity?.id, `is`(equalTo(1L)))
+        assertThat(actualEntity?.text, `is`(equalTo(entity?.text)))
+        assertThat(actualEntity?.date, `is`(equalTo(entity?.date)))
     }
 
     @Test
@@ -96,38 +93,38 @@ class NoteTest {
 
         var entities = dao?.loadAll()
 
-        assertThat(entities, IsInstanceOf(MutableList::class.java))
-        assertThat(entities?.size, IsEqual(1))
+        assertThat(entities, `is`(instanceOf(MutableList::class.java)))
+        assertThat(entities?.size, `is`(equalTo(1)))
 
         dao?.deleteByKey(entity?.id)
 
         entities = dao?.loadAll()
 
-        assertThat(entities, IsInstanceOf(MutableList::class.java))
-        assertThat(entities?.size, IsEqual(0))
+        assertThat(entities, `is`(instanceOf(MutableList::class.java)))
+        assertThat(entities?.size, `is`(equalTo(0)))
     }
 
     @Test
     fun it_should_update_name() {
         val newText = "New Text"
-        assertThat(newText, IsNot(IsEqual(entity?.text)))
+        assertThat(newText, `is`(not(equalTo(entity?.text))))
 
         entity?.let { dao?.insert(it) }
 
         var entities = dao?.loadAll()
 
-        assertThat(entities, IsInstanceOf(MutableList::class.java))
-        assertThat(entities?.size, IsEqual(1))
-        assertThat(entities?.first()?.text, IsEqual(entity?.text))
+        assertThat(entities, `is`(instanceOf(MutableList::class.java)))
+        assertThat(entities?.size, `is`(equalTo(1)))
+        assertThat(entities?.first()?.text, `is`(equalTo(entity?.text)))
 
         entity?.text = newText
         dao?.update(entity)
 
         entities = dao?.loadAll()
 
-        assertThat(entities, IsInstanceOf(MutableList::class.java))
-        assertThat(entities?.size, IsEqual(1))
-        assertThat(entities?.first()?.text, IsEqual(newText))
+        assertThat(entities, `is`(instanceOf(MutableList::class.java)))
+        assertThat(entities?.size, `is`(equalTo(1)))
+        assertThat(entities?.first()?.text, `is`(equalTo(newText)))
     }
 
     @Test
@@ -137,15 +134,15 @@ class NoteTest {
 
         var entities = dao?.loadAll()
 
-        assertThat(entities, IsInstanceOf(MutableList::class.java))
-        assertThat(entities?.size, IsEqual(1))
-        assertThat(entities?.first(), IsEqual(entity))
+        assertThat(entities, `is`(instanceOf(MutableList::class.java)))
+        assertThat(entities?.size, `is`(equalTo(1)))
+        assertThat(entities?.first(), `is`(equalTo(entity)))
 
         dao?.delete(entity)
-        assertThat(entities?.size, IsEqual(1))
-        assertThat(entities?.first(), IsEqual(entity))
+        assertThat(entities?.size, `is`(equalTo(1)))
+        assertThat(entities?.first(), `is`(equalTo(entity)))
 
         entities = dao?.loadAll()
-        assertThat(entities?.size, IsEqual(0))
+        assertThat(entities?.size, `is`(equalTo(0)))
     }
 }

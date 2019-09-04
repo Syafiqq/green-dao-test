@@ -82,4 +82,47 @@ class ManyToOneTest {
         db?.close()
         helper?.close()
     }
+
+    @Test
+    fun it_should_insert_both() {
+        entity1?.let { dao1?.insertInTx(it) }
+        entity2?.let { dao2?.insert(it) }
+
+        assertThat(dao1?.count(), IsEqual(5L))
+        assertThat(dao2?.count(), IsEqual(1L))
+
+        entity1?.forEachIndexed { i, n -> assertThat(n.id, IsEqual(i + 1L)) }
+    }
+
+    @Test
+    fun it_should_not_attached_all_via_update() {
+        entity1?.let { dao1?.insertInTx(it) }
+        entity2?.let { dao2?.insert(it) }
+        entity2?.notes = entity1
+        entity1?.let { dao1?.updateInTx(it) }
+        entity2?.let { dao2?.updateInTx(it) }
+
+        assertThat(dao1?.count(), IsEqual(5L))
+        assertThat(dao2?.count(), IsEqual(1L))
+
+        entity1?.forEachIndexed { i, n -> assertThat(n.id, IsEqual(i + 1L)) }
+
+        val entities2 = dao2?.loadAll()
+        val actualEntity2 = entities2?.first()
+        assertThat(actualEntity2, IsNot(IsNull()))
+        assertThat(actualEntity2?.notes, IsNot(IsNull()))
+        assertThat(actualEntity2?.notes?.size, IsEqual(5))
+        actualEntity2?.notes?.forEach {n ->
+            assertThat(n?.user, IsNull())
+            assertThat(n?.userId, IsNull())
+            assertThat(n?.userId, IsNot(IsEqual(entity2?.id)))
+        }
+
+        val entities1 = dao1?.loadAll()
+        val actualEntity1 = entities1?.first()
+        assertThat(actualEntity1, IsNot(IsNull()))
+        assertThat(actualEntity1?.user, IsNot(IsEqual(entity2)))
+        assertThat(actualEntity1?.userId, IsNull())
+        assertThat(actualEntity1?.userId, IsNot(IsEqual(entity2?.id)))
+    }
 }

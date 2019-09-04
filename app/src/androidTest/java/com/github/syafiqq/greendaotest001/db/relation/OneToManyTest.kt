@@ -327,4 +327,31 @@ class OneToManyTest {
             assertThat(n?.userId, `is`(equalTo(entity2?.id)))
         }
     }
+
+    @Test
+    fun it_should_raised_inconsistency() {
+        entity1?.let { dao1?.insertInTx(it) }
+        entity2?.let { dao2?.insert(it) }
+        entity1?.forEach {it.user = entity2}
+        entity1?.let { dao1?.saveInTx(it) }
+
+        assertThat(dao1?.count(), `is`(equalTo(5L)))
+        assertThat(dao2?.count(), `is`(equalTo(1L)))
+
+        entity2?.let {
+            dao2?.delete(it)
+            dao2?.detach(it)
+        }
+        dao1?.detachAll()
+        dao2?.detachAll()
+
+        assertThat(dao1?.count(), `is`(equalTo(5L)))
+        assertThat(dao2?.count(), `is`(equalTo(0L)))
+        assertThat(dao2?.loadAll()?.size, `is`(equalTo(0)))
+
+        dao1?.loadAll()?.forEach {
+            assertThat(it?.user, `is`(nullValue()))
+            assertThat(it?.userId, `is`(equalTo(1L)))
+        }
+    }
 }

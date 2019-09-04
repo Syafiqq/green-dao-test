@@ -268,4 +268,65 @@ class OneToManyTest {
             assertThat(n?.userId, IsEqual(entity2?.id))
         }
     }
+
+    @Test
+    fun it_should_update_list_after_switch() {
+        val subEntity10 = entity1?.drop(0)?.take(2)
+        subEntity10?.let { dao1?.insertInTx(it) }
+        entity2?.let { dao2?.insert(it) }
+        subEntity10?.forEach {it.user = entity2}
+        subEntity10?.let { dao1?.updateInTx(it) }
+
+        assertThat(dao1?.count(), IsEqual(2L))
+        assertThat(dao2?.count(), IsEqual(1L))
+
+        subEntity10?.forEachIndexed { i, n -> assertThat(n.id, IsEqual(i + 1L)) }
+
+        val entities2 = dao2?.loadAll()
+        val actualEntity2 = entities2?.first()
+        assertThat(actualEntity2, IsNot(IsNull()))
+        assertThat(actualEntity2?.notes, IsNot(IsNull()))
+        assertThat(actualEntity2?.notes?.size, IsEqual(2))
+        actualEntity2?.notes?.forEach {n ->
+            assertThat(n?.user, IsNot(IsNull()))
+            assertThat(n?.userId, IsNot(IsNull()))
+            assertThat(n?.userId, IsEqual(entity2?.id))
+        }
+
+        val entities1 = dao1?.loadAll()
+        val actualEntity1 = entities1?.first()
+        assertThat(actualEntity1, IsNot(IsNull()))
+        assertThat(actualEntity1?.user, IsEqual(entity2))
+        assertThat(actualEntity1?.userId, IsNot(IsNull()))
+        assertThat(actualEntity1?.userId, IsEqual(entity2?.id))
+
+        val subEntity11 = entity1?.drop(2)?.take(3)
+        subEntity11?.let { dao1?.insertInTx(it) }
+
+        subEntity10?.forEach {it.user = null}
+        subEntity11?.forEach {it.user = entity2}
+        subEntity11?.let { dao1?.updateInTx(it) }
+        subEntity10?.let { dao1?.updateInTx(it) }
+
+        val entities20 = dao2?.loadAll()
+        val actualEntity20 = entities20?.first()
+        assertThat(actualEntity20, IsNot(IsNull()))
+        assertThat(actualEntity20?.notes, IsNot(IsNull()))
+        assertThat(actualEntity20?.notes?.size, IsEqual(2))
+        actualEntity20?.notes?.forEach {n ->
+            assertThat(n?.user, IsNull())
+            assertThat(n?.userId, IsNull())
+        }
+
+        actualEntity20?.resetNotes()
+
+        assertThat(actualEntity20, IsNot(IsNull()))
+        assertThat(actualEntity20?.notes, IsNot(IsNull()))
+        assertThat(actualEntity20?.notes?.size, IsEqual(3))
+        actualEntity20?.notes?.forEach {n ->
+            assertThat(n?.user, IsNot(IsNull()))
+            assertThat(n?.userId, IsNot(IsNull()))
+            assertThat(n?.userId, IsEqual(entity2?.id))
+        }
+    }
 }

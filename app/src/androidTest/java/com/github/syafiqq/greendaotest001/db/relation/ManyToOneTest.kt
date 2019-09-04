@@ -123,4 +123,39 @@ class ManyToOneTest {
         assertThat(actualEntity1?.userId, `is`(nullValue()))
         assertThat(actualEntity1?.userId, `is`(not(equalTo(entity2?.id))))
     }
+
+    @Test
+    fun it_should_attached_due_to_extension_via_update() {
+        entity1?.let { dao1?.insertInTx(it) }
+        entity2?.let { dao2?.insert(it) }
+        entity1?.let { entity2?.assignNotes(it) }
+        entity1?.let { dao1?.updateInTx(it) }
+
+        assertThat(dao1?.count(), `is`(equalTo(5L)))
+        assertThat(dao2?.count(), `is`(equalTo(1L)))
+
+        entity1?.forEachIndexed { i, n -> assertThat(n.id, `is`(equalTo(i + 1L))) }
+
+        val entities2 = dao2?.loadAll()
+        val actualEntity2 = entities2?.first()
+        assertThat(actualEntity2, `is`(notNullValue()))
+        assertThat(actualEntity2?.notes, `is`(notNullValue()))
+        assertThat(actualEntity2?.notes?.size, `is`(equalTo(5)))
+        actualEntity2?.notes?.forEach {n ->
+            assertThat(n?.user, `is`(notNullValue()))
+            assertThat(n?.userId, `is`(notNullValue()))
+            assertThat(n?.userId, `is`(equalTo(entity2?.id)))
+        }
+
+        val entities1 = dao1?.loadAll()
+        val actualEntity1 = entities1?.first()
+        assertThat(actualEntity1, `is`(notNullValue()))
+        assertThat(actualEntity1?.user, `is`(equalTo(entity2)))
+        assertThat(actualEntity1?.userId, `is`(notNullValue()))
+        assertThat(actualEntity1?.userId, `is`(equalTo(entity2?.id)))
+    }
+}
+
+fun User.assignNotes(notes: Collection<Note> = listOf()) {
+    notes.forEach { it.user = this }
 }

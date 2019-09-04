@@ -63,12 +63,13 @@ class NoteTest {
         assertThat(entities?.size, `is`(equalTo(0)))
     }
 
-    @Test
+    @Test(expected = DaoException::class)
     fun it_should_return_getter() {
         assertThat(entity?.id, `is`(nullValue()))
         assertThat(entity?.text, `is`(notNullValue()))
         assertThat(entity?.date, `is`(notNullValue()))
         assertThat(entity?.userId, `is`(nullValue()))
+        // Todo : Check later
         assertThat(entity?.user, `is`(nullValue()))
     }
 

@@ -12,6 +12,7 @@ import org.greenrobot.greendao.identityscope.IdentityScopeType
 import org.hamcrest.CoreMatchers.*
 import org.junit.After
 import org.junit.Assert
+import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -37,12 +38,12 @@ class UserTest {
             this.status = "active"
         }
 
-        Assert.assertThat(entity, `is`(notNullValue()))
-        Assert.assertThat(context, `is`(notNullValue()))
-        Assert.assertThat(helper, `is`(notNullValue()))
-        Assert.assertThat(db, `is`(notNullValue()))
-        Assert.assertThat(session, `is`(notNullValue()))
-        Assert.assertThat(dao, `is`(notNullValue()))
+        assertThat(entity, `is`(notNullValue()))
+        assertThat(context, `is`(notNullValue()))
+        assertThat(helper, `is`(notNullValue()))
+        assertThat(db, `is`(notNullValue()))
+        assertThat(session, `is`(notNullValue()))
+        assertThat(dao, `is`(notNullValue()))
     }
 
     @After
@@ -57,8 +58,8 @@ class UserTest {
     fun it_should_select_all_entities() {
         val entities = dao?.loadAll()
 
-        Assert.assertThat(entities, `is`(instanceOf(MutableList::class.java)))
-        Assert.assertThat(entities?.size, `is`(equalTo(0)))
+        assertThat(entities, `is`(instanceOf(MutableList::class.java)))
+        assertThat(entities?.size, `is`(equalTo(0)))
     }
 
     @Test
@@ -67,13 +68,14 @@ class UserTest {
 
         val entities = dao?.loadAll()
 
-        Assert.assertThat(entities, `is`(instanceOf(MutableList::class.java)))
-        Assert.assertThat(entities?.size, `is`(equalTo(1)))
-        val actualEntity = entities?.first()
-        Assert.assertThat(actualEntity?.id, `is`(equalTo(entity?.id)))
-        Assert.assertThat(actualEntity?.id, `is`(equalTo(1L)))
-        Assert.assertThat(actualEntity?.name, `is`(equalTo(entity?.name)))
-        Assert.assertThat(actualEntity?.status, `is`(equalTo(entity?.status)))
+        assertThat(entities, `is`(instanceOf(MutableList::class.java)))
+        assertThat(entities?.size, `is`(equalTo(1)))
+        entities?.forEach {
+            assertThat(it?.id, `is`(equalTo(entity?.id)))
+            assertThat(it?.id, `is`(equalTo(1L)))
+            assertThat(it?.name, `is`(equalTo(entity?.name)))
+            assertThat(it?.status, `is`(equalTo(entity?.status)))
+        }
     }
 
     @Test
@@ -82,37 +84,37 @@ class UserTest {
 
         var entities = dao?.loadAll()
 
-        Assert.assertThat(entities, `is`(instanceOf(MutableList::class.java)))
-        Assert.assertThat(entities?.size, `is`(equalTo(1)))
+        assertThat(entities, `is`(instanceOf(MutableList::class.java)))
+        assertThat(entities?.size, `is`(equalTo(1)))
 
         dao?.deleteByKey(entity?.id)
 
         entities = dao?.loadAll()
 
-        Assert.assertThat(entities, `is`(instanceOf(MutableList::class.java)))
-        Assert.assertThat(entities?.size, `is`(equalTo(0)))
+        assertThat(entities, `is`(instanceOf(MutableList::class.java)))
+        assertThat(entities?.size, `is`(equalTo(0)))
     }
 
     @Test
     fun it_should_update_name() {
         val newText = "New Text"
-        Assert.assertThat(newText, `is`(not(equalTo(entity?.name))))
+        assertThat(newText, `is`(not(equalTo(entity?.name))))
 
         entity?.let { dao?.insert(it) }
 
         var entities = dao?.loadAll()
 
-        Assert.assertThat(entities, `is`(instanceOf(MutableList::class.java)))
-        Assert.assertThat(entities?.size, `is`(equalTo(1)))
-        Assert.assertThat(entities?.first()?.name, `is`(equalTo(entity?.name)))
+        assertThat(entities, `is`(instanceOf(MutableList::class.java)))
+        assertThat(entities?.size, `is`(equalTo(1)))
+        assertThat(entities?.first()?.name, `is`(equalTo(entity?.name)))
 
         entity?.name = newText
         dao?.update(entity)
 
         entities = dao?.loadAll()
 
-        Assert.assertThat(entities, `is`(instanceOf(MutableList::class.java)))
-        Assert.assertThat(entities?.size, `is`(equalTo(1)))
-        Assert.assertThat(entities?.first()?.name, `is`(equalTo(newText)))
+        assertThat(entities, `is`(instanceOf(MutableList::class.java)))
+        assertThat(entities?.size, `is`(equalTo(1)))
+        assertThat(entities?.first()?.name, `is`(equalTo(newText)))
     }
 }

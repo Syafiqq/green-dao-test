@@ -81,11 +81,12 @@ class NoteTest {
 
         assertThat(entities, `is`(instanceOf(MutableList::class.java)))
         assertThat(entities?.size, `is`(equalTo(1)))
-        val actualEntity = entities?.first()
-        assertThat(actualEntity?.id, `is`(equalTo(entity?.id)))
-        assertThat(actualEntity?.id, `is`(equalTo(1L)))
-        assertThat(actualEntity?.text, `is`(equalTo(entity?.text)))
-        assertThat(actualEntity?.date, `is`(equalTo(entity?.date)))
+        entities?.forEach {
+            assertThat(it?.id, `is`(equalTo(entity?.id)))
+            assertThat(it?.id, `is`(equalTo(1L)))
+            assertThat(it?.text, `is`(equalTo(entity?.text)))
+            assertThat(it?.date, `is`(equalTo(entity?.date)))
+        }
     }
 
     @Test

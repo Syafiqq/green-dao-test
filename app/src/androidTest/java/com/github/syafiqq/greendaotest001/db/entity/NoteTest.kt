@@ -129,4 +129,23 @@ class NoteTest {
         assertThat(entities?.size, IsEqual(1))
         assertThat(entities?.first()?.text, IsEqual(newText))
     }
+
+    @Test
+    fun it_should_persist_cache_after_delete() {
+        entity?.let { dao?.insert(it) }
+        dao?.detach(entity)
+
+        var entities = dao?.loadAll()
+
+        assertThat(entities, IsInstanceOf(MutableList::class.java))
+        assertThat(entities?.size, IsEqual(1))
+        assertThat(entities?.first(), IsEqual(entity))
+
+        dao?.delete(entity)
+        assertThat(entities?.size, IsEqual(1))
+        assertThat(entities?.first(), IsEqual(entity))
+
+        entities = dao?.loadAll()
+        assertThat(entities?.size, IsEqual(0))
+    }
 }

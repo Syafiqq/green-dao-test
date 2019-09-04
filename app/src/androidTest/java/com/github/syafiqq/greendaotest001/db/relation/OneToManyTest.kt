@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteConstraintException
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.github.syafiqq.greendaotest001.entity.*
+import org.greenrobot.greendao.DaoException
 import org.greenrobot.greendao.database.Database
 import org.greenrobot.greendao.identityscope.IdentityScopeType
 import org.hamcrest.CoreMatchers.*
@@ -352,6 +353,103 @@ class OneToManyTest {
         dao1?.loadAll()?.forEach {
             assertThat(it?.user, `is`(nullValue()))
             assertThat(it?.userId, `is`(equalTo(1L)))
+        }
+    }
+
+    @Test
+    fun it_should_resolve_inconsistency_with_set_null() {
+        fun User.deleteFix() {
+            myDao?.database?.beginTransaction()
+            try {
+                notes?.forEach {
+                    it.user = null
+                    it.update()
+                }
+                delete()
+                myDao?.database?.setTransactionSuccessful()
+            } catch (ex: Exception) {
+            } finally {
+                myDao?.database?.endTransaction()
+            }
+
+        }
+
+        entity1?.let { dao1?.insertInTx(it) }
+        entity2?.let { dao2?.insert(it) }
+        entity1?.forEach {it.user = entity2}
+        entity1?.let { dao1?.saveInTx(it) }
+
+        assertThat(dao1?.count(), `is`(equalTo(5L)))
+        assertThat(dao2?.count(), `is`(equalTo(1L)))
+
+        entity2?.let {
+            it.deleteFix()
+            dao2?.detach(it)
+        }
+
+        assertThat(dao1?.count(), `is`(equalTo(5L)))
+        assertThat(dao2?.count(), `is`(equalTo(0L)))
+        assertThat(dao2?.loadAll()?.size, `is`(equalTo(0)))
+
+        dao1?.loadAll()?.forEach {
+            assertThat(it?.user, `is`(nullValue()))
+            assertThat(it?.userId, `is`(nullValue()))
+        }
+    }
+
+    @Test
+    fun it_should_resolve_inconsistency_with_cascade() {
+        fun User.deleteFix() {
+            myDao?.database?.beginTransaction()
+            try {
+                notes?.let {
+                    (myDao?.session?.getDao(Note::class.java) as NoteDao?)?.deleteInTx(it)
+                }
+                delete()
+                myDao?.database?.setTransactionSuccessful()
+            } catch (ex: Exception) {
+            } finally {
+                myDao?.database?.endTransaction()
+            }
+
+        }
+
+        entity1?.let { dao1?.insertInTx(it) }
+        entity2?.let { dao2?.insert(it) }
+        entity1?.forEach {it.user = entity2}
+        entity1?.let { dao1?.saveInTx(it) }
+
+        assertThat(dao1?.count(), `is`(equalTo(5L)))
+        assertThat(dao2?.count(), `is`(equalTo(1L)))
+
+        entity2?.let {
+            it.deleteFix()
+            dao2?.detach(it)
+        }
+
+        assertThat(dao1?.count(), `is`(equalTo(0L)))
+        assertThat(dao2?.count(), `is`(equalTo(0L)))
+    }
+
+    @Test(expected = DaoException::class)
+    fun it_should_resolve_inconsistency_with_restrict() {
+        fun User.deleteFix() {
+            if(notes?.any() == true)
+                throw DaoException("Relation is exists")
+            delete()
+        }
+
+        entity1?.let { dao1?.insertInTx(it) }
+        entity2?.let { dao2?.insert(it) }
+        entity1?.forEach {it.user = entity2}
+        entity1?.let { dao1?.saveInTx(it) }
+
+        assertThat(dao1?.count(), `is`(equalTo(5L)))
+        assertThat(dao2?.count(), `is`(equalTo(1L)))
+
+        entity2?.let {
+            it.deleteFix()
+            dao2?.detach(it)
         }
     }
 }
